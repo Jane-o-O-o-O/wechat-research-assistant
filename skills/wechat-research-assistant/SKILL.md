@@ -11,7 +11,9 @@ description: Analyze selected WeChat conversations, maintain evidence-based rela
 
 先读 [Windows 部署与限制](references/windows.md)。确认运行电脑、本人账号、获准读取的会话、用户目标，以及采用当前 Codex 模型分析还是本地模型。创建独立工作目录，用 `scripts/workflow.py init --workspace <目录>` 初始化；配置只写入该目录 `.private/settings.json`。技能目录与运行资料目录分开，不把真实数据或密钥放入技能包。
 
-Windows 读取适配器面向参考版本的 WeFlow CLI，属于候选集成，必须在目标电脑验收。脚本不安装第三方软件、不提取密钥。用户主动完成首次密钥配置后才可读取。读取器不可用时明确标记阻塞；可先分析用户主动提供的记录，不声称已经自动同步。
+Windows 默认使用已编译的 WeFlow v5.0.1 CLI，先检查已有程序；没有时由助手按 Windows 说明运行随技能提供的 `scripts/install_reader.ps1` 下载、核验、解压；仓库根目录也有 `install-reader.ps1` 入口。不要要求普通使用者安装 Git、Rust、Visual Studio 或 Windows SDK，也不强制构建历史 a19 提交。本包兼容发布版与后续开发版的消息格式，实际微信兼容性仍需目标电脑验收。下载程序与首次密钥配置分开，后者需要本人配合；读取器或密钥不可用时明确记录阻塞。
+
+WorkBuddy 可以直接调用 `weflow.exe --json chat messages <已授权来源ID> ...` 获取数据并执行本技能的分析。完整 stdout/stderr 仅捕获到受保护的 `.private`；需要自动分页、去重、归档与提交进度时使用 `workflow.py`，它依然调用同一个 CLI，不是额外的服务。WorkBuddy 的技能导入和本地定时任务按其实际入口配置，不强制使用 Codex 安装目录。
 
 ## 每次同步与分析
 

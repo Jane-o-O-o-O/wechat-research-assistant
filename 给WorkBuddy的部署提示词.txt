@@ -1,0 +1,14 @@
+请在这台 Windows 电脑上继续部署微信信息助理：
+https://github.com/Jane-o-O-o-O/wechat-research-assistant
+
+先读取最新 README、skills/wechat-research-assistant/SKILL.md 和 references/windows.md，保留已有数据、配置及本地修改。采用现成 WeFlow CLI，不要求我安装 Git、Rust、Visual Studio、Windows SDK，也不要求编译历史 a19 提交。
+
+先检查是否已经有可信、可用的 weflow.exe。有则核对版本和 JSON 格式后复用；没有则运行仓库根目录 install-reader.ps1，下载上游 v5.0.1 Windows x64 ZIP，核对脚本固定的 SHA-256，解压并验证 --version 和 --help。架构不匹配、网络或策略阻止时报告具体原因，不换不明来源，不关闭安全软件。
+
+后续由你直接调用这个 CLI 查询已授权会话，捕获完整 JSON 到受保护的 .private 后分析。也可使用 workflow.py 处理分页、去重和归档；它调用的仍是同一个 CLI，不需要再启动服务。不要因权限设置失败就无条件继续保存真实消息。
+
+数据路径和本人账号尽量自动识别。需要我确认的会话、目标和起始日期一次询问；首次密钥配置所需的本人授权、退出/重新打开微信和登录操作，再告诉我具体步骤。密钥只保存在本机，不粘贴到聊天中。微信4.1.11.52是否可读以实际验收为准，不自动升级或降级微信。
+
+先完成一个选定会话的同步、分析、报告保存、提交进度和重复查询验收；公开背景调查只用我授权的非敏感关键词，按 references/public-search.md 使用免 Key 搜索。回复只生成草稿。通过后在 WorkBuddy 创建本地每日22:00任务，不把本机微信资料放进无法访问本机文件的云端任务。
+
+最后报告程序路径、实际完成步骤、微信是否接通、可用搜索源和定时任务状态。程序能启动不等于已读取微信；未完成项明确列出。

@@ -1,24 +1,27 @@
 {
   "package": "微信信息助理工作流",
-  "version": "20261103-public-repository",
+  "version": "20261103-published-cli-default",
   "windows_wechat_live_tested": false,
   "files": {
     ".gitattributes": "5071d6b2269f9828ec6a293f95235ad2f726f83d60c05dbb7fb58710debe1bd5",
-    ".github/workflows/tests.yml": "3d835f25e3181e9ef6cd5bbafdf462ee98e918cbfe667e3f4d489b58a5bf0958",
+    ".github/workflows/tests.yml": "229922fc5646219b5bb6e3b5e1b99ce1541f502b1b29f17d24680e0362e0b5ae",
     ".gitignore": "78a845001d75888e59fddd9bea44443a7aeb9f9599ea3df6a1b51c0f63d10471",
-    "README.md": "00eece8544a03b8e17c615b40a44fd437dc03238b2388a433549a5439c46f4c8",
+    "README.md": "22d9540aa6ec1dfd999ce9512d3be4bdfaef1c4e77f43008388c4313ec4022be",
+    "install-reader.ps1": "2f71a849d44dc602d7dfad57737722a341ef29140b1016dcc7b66bcddd595656",
     "install.ps1": "31f4fbb591de0b5b4f6266b3fba6f5b00283e2046dfa2122f295e7e7dc6229ba",
-    "skills/wechat-research-assistant/SKILL.md": "20bf77f9789a10fb7375052ac6d9002e8af92c76ba8453732b964085a00b4379",
+    "skills/wechat-research-assistant/SKILL.md": "46fcb6489044dd6a0ed24c2f28a3b6d4da1fdd7d582e3d4c7e95307b8337124a",
     "skills/wechat-research-assistant/references/public-search.md": "53cc71f9d56c9f7517c38a4d091cdeb85ed8caae19110e0df9bc77d3fbd5a70a",
     "skills/wechat-research-assistant/references/scheduled-prompt.md": "00cf747c1ee5440c4b2956ca80cf68ee2a452e13523c196bf3c4659ba7f9e937",
-    "skills/wechat-research-assistant/references/windows-build.md": "06b5591c1cbfaa6b2f9c59fbb66ef8d5f428135e333f79a560a20b9630441687",
-    "skills/wechat-research-assistant/references/windows.md": "59d5fdff0b902d8f31a74f70848612269043406572002c011b83a9e0350aaa70",
+    "skills/wechat-research-assistant/references/windows-build.md": "a7d448a3610a4cfcb4f8fd9a6c1eef5bb5d145e42b91eaab2b7df0fa993c3052",
+    "skills/wechat-research-assistant/references/windows.md": "a0e4504eb0f1008160d67e8b3f693475d09f6ab1fcf1fe8b124d4b2231778bf1",
+    "skills/wechat-research-assistant/scripts/install_reader.ps1": "36fb091a00b1eeffda9ced81f604296c0d5de5c45e100072c39661884096f956",
     "skills/wechat-research-assistant/scripts/public_search.py": "2fd29c88700b8286481fb7703cc9425767761cadd9fca5127dff253a32de1394",
-    "skills/wechat-research-assistant/scripts/workflow.py": "f0176ba0d0cc8f2188cbd83375dd30f8f677aa46961f2e755a0d53f70c1acdb6",
+    "skills/wechat-research-assistant/scripts/workflow.py": "9d41c2a993055bde0ddcdf1ea3d4add27545113887a78bdbbfe8c0b8cb2d2c36",
     "tests/test_public_search.py": "44d570c7eccf5d6810a3a0095d799b0479d1f88523a80f0f67de43d24a472cfd",
-    "tests/test_workflow.py": "dd859073bfa8e8af954bd241be6a6e7a5f85f58147924ed95e202fd5669bca05",
-    "使用说明.md": "c7da4919e64765dabe84f03b65e55a13203d24ccee693fcff526e2498365dfc9",
-    "给Codex的部署提示词.txt": "e0f117eff9309e44a644936a2608e10c99b09b17647f0ef48c6eb9db6b956da6",
-    "验证记录_20261103.json": "69f795f749e57396ccd0a1c1550f0061a92cfbacf034cecea2a2533f920d4261"
+    "tests/test_workflow.py": "8c87c19aa1883ca5ca06f3768ca0ef5838e02bbbf45bd2c949d058dd4bb94e96",
+    "使用说明.md": "a84908ffae628e9ac7f81d3ac6947002f77f3293026b9de2c1f222b6de3042f8",
+    "给Codex的部署提示词.txt": "2e86c70ee57bfeb1991cc080ff67728f303764938f615d0a897bee4f083160cf",
+    "给WorkBuddy的部署提示词.txt": "871d25160332dee29006210f52d078c492df2340141d83683181935c47c096a0",
+    "验证记录_20261103.json": "9e5b8b30fa47a279eb6bfb2297f7723c722de984a30fbd6929f8e2d73943d748"
   }
 }

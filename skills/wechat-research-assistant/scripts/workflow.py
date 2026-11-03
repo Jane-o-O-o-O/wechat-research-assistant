@@ -183,6 +183,33 @@ def body_of(row):
     return '[非文本消息；需另行读取原件]', 'attachment_unread'
 
 
+def normalize_row(row):
+    """Accept the published v5.0.1 CLI as well as the newer typed-row format.
+
+    The capture page is archived before normalization; source fields are also
+    retained here so the archive remains traceable to the reader's response.
+    """
+    if not isinstance(row, dict):
+        raise WorkflowError('reader_message_schema_mismatch')
+    if 'localId' in row:
+        validate_row(row)
+        return dict(row)
+    required = ('local_id', 'local_type', 'message_content', 'db_name', '_cursor')
+    if any(k not in row for k in required):
+        raise WorkflowError('reader_message_schema_mismatch')
+    shard = re.fullmatch(r'message_(\d+)(?:\.db)?', str(row['db_name']))
+    if not shard:
+        raise WorkflowError('reader_message_shard_missing')
+    out = dict(row)
+    out.update(localId=row['local_id'], localType=row['local_type'],
+               createTime=row.get('create_time'), serverId=row.get('server_id'),
+               sortSeq=row.get('sort_seq'), content=row['message_content'],
+               sender=row.get('sender_username'), isSend=row.get('is_send'),
+               shard=shard.group(1), _reader_format='weflow-v5-raw')
+    validate_row(out)
+    return out
+
+
 def validate_row(row):
     required = ('_cursor', 'localId', 'shard', 'localType', 'content')
     if not isinstance(row, dict) or any(k not in row for k in required):
@@ -323,8 +350,8 @@ def capture(private, c, state, reader):
                 atomic_write(base / ('page-%05d.json' % n), rows)
                 if not rows:
                     break
-                for row in rows:
-                    validate_row(row)
+                for raw_row in rows:
+                    row = normalize_row(raw_row)
                     gathered[message_key(row)] = row
                 candidate = rows[0]['_cursor']  # newest among the next closest rows
                 if candidate in visited:

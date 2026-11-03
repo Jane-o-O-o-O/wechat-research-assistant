@@ -123,6 +123,37 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(self.root.stat().st_mode, before)
         self.assertFalse((self.root / 'unrelated').exists())
 
+    def test_published_cli_rows_capture_without_a_compiler(self):
+        legacy = {'_cursor': '1793690001000.1793690001.7.2', 'local_id': '7',
+                  'server_id': '9223372036854700007', 'local_type': '1',
+                  'create_time': '1793690001', 'sort_seq': '1793690001000',
+                  'message_content': '请确认需求', 'sender_username': 'fixture-other',
+                  'is_send': '0', 'db_name': 'message_2', '_db_path': 'fixture/message_2.db'}
+        _, result, _ = self.run_capture({('fixture-a', None): [legacy],
+                                         ('fixture-a', legacy['_cursor']): []})
+        self.assertEqual(result[0]['status'], 'pending_analysis')
+        archived = w.read_json(self.p / 'archives/alpha.json')['messages']
+        value = archived['server:9223372036854700007']
+        self.assertEqual(value['shard'], '2')
+        self.assertEqual(value['content'], '请确认需求')
+        self.assertEqual(value['message_content'], legacy['message_content'])
+        raw_pages = list((self.p / 'batches/alpha').glob('*/page-00000.json'))
+        self.assertEqual(w.read_json(raw_pages[0]), [legacy])
+        pending = w.read_json(self.p / 'pending/alpha.json')
+        review = json.loads((self.p / pending['review']).read_text(encoding='utf-8'))
+        self.assertEqual(review['attribution'], '对方/群成员')
+
+    def test_published_cli_fallback_ids_use_actual_message_shard(self):
+        legacy = {'_cursor': 'opaque', 'local_id': '7', 'server_id': '0', 'local_type': '1',
+                  'create_time': '1793690001', 'message_content': '测试',
+                  'sender_username': 'fixture-self', 'db_name': 'message_2'}
+        a = w.normalize_row(legacy)
+        b = w.normalize_row(dict(legacy, db_name='message_3'))
+        self.assertNotEqual(w.message_key(a), w.message_key(b))
+        self.assertEqual(w.review_of(a, 'alpha', 'fixture-self')['attribution'], '本人')
+        with self.assertRaises(w.WorkflowError):
+            w.normalize_row(dict(legacy, db_name='unknown'))
+
     def test_redaction_and_xml_credentials_never_in_review(self):
         samples = ['卡号: 6222 1234 5678 9012', '身份证：110101199901010012',
                    '手机号：13900001234', '密码: abc~2!XY', 'Abc~2!XY',

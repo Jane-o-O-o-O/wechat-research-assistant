@@ -83,5 +83,21 @@
     "ci_matrix": "Windows/macOS/Linux; Python 3.10/3.13; offline tests only",
     "platform_specific_test_skipped_on_mac": 1,
     "windows_acl_regression_test_added": true
+  },
+  "published_cli_update": {
+    "updated_at": "2026-11-03T20:45:58+08:00",
+    "default_release": "v5.0.1",
+    "upstream_commit": "6115746c5f6e5124ed7aaf4febc300d5969cead3",
+    "archive_sha256": "8d88ca61c504c8d509fd7b6934e4d2261ba986f6a1e13df68c3732323e1b26fa",
+    "archive_bytes": 11376812,
+    "archive_digest_and_zip_integrity_verified": true,
+    "offline_unit_tests": {
+      "total": 26,
+      "passed_on_mac": 25,
+      "skipped_on_mac": 1
+    },
+    "no_compiler_required_for_default_install": true,
+    "windows_cli_startup_check": "See GitHub Actions Windows/Python 3.13 install-reader step",
+    "windows_wechat_live_tested": false
   }
 }

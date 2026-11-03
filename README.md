@@ -2,9 +2,9 @@
 
 [![tests](https://github.com/Jane-o-O-o-O/wechat-research-assistant/actions/workflows/tests.yml/badge.svg)](https://github.com/Jane-o-O-o-O/wechat-research-assistant/actions/workflows/tests.yml)
 
-用于 Codex 的个人微信信息分析 Skill：读取**用户选定的会话**，持续归档消息，结合已有资料和公开背景，整理需求、承诺、待办、项目进展与回复草稿。
+供 Codex / WorkBuddy 使用的个人微信信息分析 Skill：通过现成的 WeFlow CLI 读取**用户选定的会话**，持续归档消息，结合已有资料和公开背景，整理需求、承诺、待办、项目进展与回复草稿。
 
-这是一个可读源码的工作流包，包含 Skill、Python 脚本、部署提示词和定时任务模板。公开搜索免 API Key；分析使用你已有的 Codex 模型服务。微信读取器由使用者在自己的电脑上单独配置。
+这是一个可读源码的工作流包，包含 Skill、Python 脚本、部署提示词和定时任务模板。公开搜索免 API Key；分析使用已有助手。默认下载已经编译好的 Windows CLI，**不需要 Git、Rust、Visual Studio 或 Windows SDK**。微信首次授权和登录仍由本人完成。
 
 ## 当前能力与验证范围
 
@@ -13,7 +13,7 @@
 | 指定会话增量同步 | 已实现按来源分页、消息去重、账号绑定和私有归档 |
 | 分析与资料维护 | 由 Codex 按 Skill 执行，保留证据、日期和用户补充 |
 | 公开背景搜索 | 六个免 Key 来源；搜索与原文读取可独立使用 |
-| Windows 微信读取 | 候选 WeFlow CLI 适配器已编写，仍需目标电脑实机验收 |
+| Windows 微信读取 | 支持发布版 v5.0.1 CLI 的消息格式；真实微信仍需目标电脑验收 |
 | 自动更新 | 提供桌面本地定时任务提示词，部署验收后启用 |
 | 附件、语音、朋友圈 | 未统一实现；当前只提取部分消息标题和引用，缺件会保留限制 |
 
@@ -38,6 +38,14 @@ flowchart TD
 
 分析时区分直接发言、引用、转发历史、对方自述、实际验证和推断。“可能的沟通含义”需要证据和其他解释，不写成对方已经承认的动机。回复只生成草稿。
 
+## 快速开始：Windows + WorkBuddy
+
+1. 下载本仓库 ZIP 并解压，让 WorkBuddy 读取 [给 WorkBuddy 的部署提示词](给WorkBuddy的部署提示词.txt)。
+2. WorkBuddy 先检查是否已有可用的 `weflow.exe`；没有则执行 `./install-reader.ps1`，下载上游 v5.0.1 Windows x64 包，校验 SHA-256 并解压。程序约 11.4 MB，不编译源码，不安装开发工具链。仅导入 Skill 的场景，可运行技能内 `scripts/install_reader.ps1`。
+3. 本人配合完成微信首次授权/登录。之后由 WorkBuddy 调用 `weflow.exe --json chat messages ...`，取得指定会话的 JSON，分析并更新资料。`workflow.py` 是调用同一个 CLI 的分页归档助手，不是另一个后台服务。
+
+CLI 下载检查只运行 `--version` 和 `--help`；这不等于已成功读取本机微信。目标微信版本兼容性仍需验收。WorkBuddy 的技能导入和本地定时任务按其实际入口使用，当前 `install.ps1` 仅是 Codex 的 Skill 安装入口。
+
 ## 快速开始：Windows + Codex
 
 前置环境：Windows 上可用的 Codex、Python 3.10+；读取微信还需要兼容的第三方本地读取器及本人的首次配置。搜索脚本只使用 Python 标准库，无额外搜索 SDK、账号、邮箱或 API Key。
@@ -53,9 +61,9 @@ flowchart TD
 3. 可运行 `./install.ps1`，将技能复制到当前用户 `~/.agents/skills/wechat-research-assistant`。已有目录时停止，先比较再更新。该脚本只复制文件，不下载软件、不提权、不修改执行策略、不提取密钥；也可以让 Codex 直接读取 [SKILL.md](skills/wechat-research-assistant/SKILL.md)。
 4. 在独立的资料目录完成一次手动验收，再启用定时更新。首次微信密钥配置可能需要本人配合退出/打开微信，不放进每日任务。
 
-详细步骤与第三方读取器来源见 [Windows 部署说明](skills/wechat-research-assistant/references/windows.md)。当前适配器针对文档记录的固定 WeFlow CLI 提交，不将其他同名工具当成相同接口。Mac 的 wx-cli 方案可作为同一分析方法的数据来源，但本仓库的 `workflow.py` 读取适配器目前面向 WeFlow CLI，没有封装 Mac wx-cli 的自动安装与同步适配。
+详细步骤与第三方读取器来源见 [Windows 部署说明](skills/wechat-research-assistant/references/windows.md)。默认使用上游发布的 v5.0.1 CLI，下载入口不需要编译工具；不将其他同名工具当成相同接口。Mac 的 wx-cli 方案可作为同一分析方法的数据来源，但本仓库的 `workflow.py` 读取适配器目前面向 WeFlow CLI，没有封装 Mac wx-cli 的自动安装与同步适配。
 
-需要安装指定提交的读取器时，直接看 [Windows 源码构建命令与 WorkBuddy 继续任务](skills/wechat-research-assistant/references/windows-build.md)。读取器准备、首次微信密钥配置与选定会话读取分别验收，不能只因 EXE 能启动就宣称接通微信。
+维护者需要复现历史开发提交时，可以参考 [可选源码构建](skills/wechat-research-assistant/references/windows-build.md)。这不再是普通用户的安装步骤。读取器准备、首次微信密钥配置与选定会话读取分别验收，不能只因 EXE 能启动就宣称接通微信。
 
 ## 先单独试用免 Key 搜索
 
@@ -131,7 +139,9 @@ skills/wechat-research-assistant/
   references/               部署、来源与定时任务说明
 tests/                      虚构数据的离线检查
 install.ps1                 Windows 当前用户技能安装
+install-reader.ps1          下载、核验、解压上游 Windows CLI
 给Codex的部署提示词.txt       首次部署可复制任务
+给WorkBuddy的部署提示词.txt   WorkBuddy 的直接调用与配置任务
 验证记录_20261103.json       带日期的实际测试范围
 ```
 
@@ -141,6 +151,6 @@ install.ps1                 Windows 当前用户技能安装
 py -3 -m unittest discover -s tests -v
 ```
 
-测试使用虚构消息、预设搜索响应和临时目录，不读取真实微信、不调用搜索或模型接口。GitHub Actions 会运行 Windows、macOS、Linux 上的离线检查；它们通过也不等于某个微信版本已完成实机解密验收。
+单元测试使用虚构消息、预设搜索响应和临时目录，不读取真实微信、不调用搜索或模型接口。GitHub Actions 会运行 Windows、macOS、Linux 上的离线检查，另在一组 Windows 任务中下载经哈希核验的上游发布包并测试 CLI 启动；它们通过也不等于某个微信版本已完成实机解密验收。
 
 问题反馈请附系统、Python/读取器版本、固定源码提交、脱敏错误码及最小复现步骤，不提交真实数据库、密钥或完整私聊。第三方读取器未包含在仓库中，按其各自说明与使用条款配置。
