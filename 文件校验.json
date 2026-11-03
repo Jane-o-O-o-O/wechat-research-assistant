@@ -15,7 +15,7 @@
     "skills/wechat-research-assistant/scripts/public_search.py": "2fd29c88700b8286481fb7703cc9425767761cadd9fca5127dff253a32de1394",
     "skills/wechat-research-assistant/scripts/workflow.py": "f0176ba0d0cc8f2188cbd83375dd30f8f677aa46961f2e755a0d53f70c1acdb6",
     "tests/test_public_search.py": "44d570c7eccf5d6810a3a0095d799b0479d1f88523a80f0f67de43d24a472cfd",
-    "tests/test_workflow.py": "ad27c413c55c1d8262294485982e4c9731d5706f9af30301b78bd3c3be87d58f",
+    "tests/test_workflow.py": "dd859073bfa8e8af954bd241be6a6e7a5f85f58147924ed95e202fd5669bca05",
     "使用说明.md": "c7da4919e64765dabe84f03b65e55a13203d24ccee693fcff526e2498365dfc9",
     "给Codex的部署提示词.txt": "e0f117eff9309e44a644936a2608e10c99b09b17647f0ef48c6eb9db6b956da6",
     "验证记录_20261103.json": "69f795f749e57396ccd0a1c1550f0061a92cfbacf034cecea2a2533f920d4261"

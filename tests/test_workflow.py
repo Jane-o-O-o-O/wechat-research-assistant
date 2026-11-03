@@ -67,7 +67,7 @@ class WorkflowTests(unittest.TestCase):
         p = w.read_json(self.p / 'pending/alpha.json')
         archive = w.read_json(self.p / 'archives/alpha.json')
         self.assertIn('server:' + a['serverId'], archive['messages'])
-        review = (self.p / p['review']).read_text()
+        review = (self.p / p['review']).read_text(encoding='utf-8')
         self.assertEqual(len(review.splitlines()), 3)
         evidence = json.loads(review.splitlines()[0])['evidence_id']
         report = self.root / '分析批次/alpha' / (p['batch'] + '.md')
