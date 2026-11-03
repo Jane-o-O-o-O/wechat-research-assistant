@@ -188,6 +188,7 @@ class WorkflowTests(unittest.TestCase):
         import subprocess
         code = r'''
 $ErrorActionPreference = 'Stop'
+Import-Module (Join-Path $PSHOME 'Modules\Microsoft.PowerShell.Security\Microsoft.PowerShell.Security.psd1') -ErrorAction Stop
 $acl = Get-Acl -LiteralPath $env:WECHAT_WORKFLOW_TEST_DIR
 $self = [System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value
 $sids = @($acl.Access | ForEach-Object { $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]).Value })

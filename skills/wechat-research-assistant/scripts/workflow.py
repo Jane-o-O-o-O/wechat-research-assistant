@@ -54,6 +54,9 @@ def secure_private(path):
     code = r'''
 $ErrorActionPreference = 'Stop'
 try {
+# A parent PowerShell 7 process may export a module path incompatible with
+# Windows PowerShell 5.1. Load this engine's own security cmdlets explicitly.
+Import-Module (Join-Path $PSHOME 'Modules\Microsoft.PowerShell.Security\Microsoft.PowerShell.Security.psd1') -ErrorAction Stop
 $p = $env:WECHAT_WORKFLOW_PRIVATE_DIR
 $acl = Get-Acl -LiteralPath $p
 $acl.SetAccessRuleProtection($true, $false)
@@ -75,6 +78,10 @@ Set-Acl -LiteralPath $p -AclObject $acl
 }
 '''
     env = dict(os.environ, WECHAT_WORKFLOW_PRIVATE_DIR=str(path))
+    # Only this child process: do not modify the user's persistent environment.
+    for key in list(env):
+        if key.upper() == 'PSMODULEPATH':
+            env.pop(key)
     try:
         p = subprocess.run(['powershell.exe', '-NoProfile', '-NonInteractive',
                             '-Command', code], env=env, capture_output=True,
