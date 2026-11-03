@@ -55,6 +55,8 @@ flowchart TD
 
 详细步骤与第三方读取器来源见 [Windows 部署说明](skills/wechat-research-assistant/references/windows.md)。当前适配器针对文档记录的固定 WeFlow CLI 提交，不将其他同名工具当成相同接口。Mac 的 wx-cli 方案可作为同一分析方法的数据来源，但本仓库的 `workflow.py` 读取适配器目前面向 WeFlow CLI，没有封装 Mac wx-cli 的自动安装与同步适配。
 
+需要安装指定提交的读取器时，直接看 [Windows 源码构建命令与 WorkBuddy 继续任务](skills/wechat-research-assistant/references/windows-build.md)。读取器准备、首次微信密钥配置与选定会话读取分别验收，不能只因 EXE 能启动就宣称接通微信。
+
 ## 先单独试用免 Key 搜索
 
 无需先接通微信；以下命令会在你选择的资料目录下创建私有搜索缓存。搜索词使用公开、非敏感的身份或项目关键词。
