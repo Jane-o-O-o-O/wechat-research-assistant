@@ -1,0 +1,17 @@
+.private/
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.*
+!.env.example
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.dat
+*.silk
+*.zip
+runtime/
+outputs/
+.DS_Store

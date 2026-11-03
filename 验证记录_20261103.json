@@ -1,0 +1,85 @@
+{
+  "version": "20261103-v2-keyless-search",
+  "verified_at": "2026-11-03T16:36:26+08:00",
+  "platform": "Darwin",
+  "python_version": "3.13.9",
+  "windows_native_tested": false,
+  "scope": "current_Mac_network_only_not_a_long_term_availability_guarantee",
+  "offline_tests": {
+    "passed": 22,
+    "failed": 0,
+    "wechat_capture": 12,
+    "public_search": 10
+  },
+  "sources": [
+    {
+      "source": "bing",
+      "status": "ok",
+      "error": null,
+      "result_count": 1,
+      "fetched_at": "2026-11-03T16:32:40+08:00"
+    },
+    {
+      "source": "ddg",
+      "status": "unavailable",
+      "error": "challenge_or_captcha",
+      "result_count": 0,
+      "fetched_at": null
+    },
+    {
+      "source": "crossref",
+      "status": "ok",
+      "error": null,
+      "result_count": 1,
+      "fetched_at": "2026-11-03T16:32:42+08:00"
+    },
+    {
+      "source": "github",
+      "status": "ok",
+      "error": null,
+      "result_count": 1,
+      "fetched_at": "2026-11-03T16:32:40+08:00"
+    },
+    {
+      "source": "wikipedia",
+      "status": "ok",
+      "error": null,
+      "result_count": 1,
+      "fetched_at": "2026-11-03T16:32:41+08:00"
+    },
+    {
+      "source": "ror",
+      "status": "ok",
+      "error": null,
+      "result_count": 1,
+      "fetched_at": "2026-11-03T16:32:42+08:00"
+    }
+  ],
+  "chinese_query": {
+    "query": "武汉大学 官网",
+    "status": "ok",
+    "results": 3,
+    "official_homepage_found": true
+  },
+  "public_page_fetch": {
+    "url": "https://www.crossref.org/",
+    "status": "ok",
+    "text_characters": 4531
+  },
+  "repeat_query": {
+    "status": "cached",
+    "original_fetch_time_preserved": true
+  },
+  "credentials_provided": false,
+  "paid_search_or_model_calls": false,
+  "publication_review": {
+    "reviewed_at": "2026-11-03T16:56:04+08:00",
+    "offline_tests_passed": 23,
+    "offline_tests_failed": 0,
+    "capture_tests": 13,
+    "search_tests": 10,
+    "private_output_path_guard_added": true,
+    "windows_wechat_live_tested": false,
+    "ci_matrix": "Windows/macOS/Linux; Python 3.10/3.13; offline tests only"
+  }
+}
