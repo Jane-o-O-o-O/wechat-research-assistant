@@ -49,21 +49,30 @@ def secure_private(path):
     if os.name != 'nt':
         path.chmod(0o700)
         return
-    # Set a new protected DACL, rather than leaving pre-existing explicit grants.
+    # Replace access rules while retaining the existing owner/group metadata.
     # The path is passed through env, not interpolated into PowerShell code.
     code = r'''
 $ErrorActionPreference = 'Stop'
+try {
 $p = $env:WECHAT_WORKFLOW_PRIVATE_DIR
-$acl = New-Object System.Security.AccessControl.DirectorySecurity
+$acl = Get-Acl -LiteralPath $p
 $acl.SetAccessRuleProtection($true, $false)
+foreach ($rule in @($acl.Access)) { $acl.RemoveAccessRuleSpecific($rule) }
 $sid = [System.Security.Principal.WindowsIdentity]::GetCurrent().User
-$acl.SetOwner($sid)
-$sys = New-Object System.Security.Principal.SecurityIdentifier('S-1-5-18')
+$sys = [System.Security.Principal.SecurityIdentifier]::new('S-1-5-18')
+$rights = [System.Security.AccessControl.FileSystemRights]::FullControl
+$inherit = [System.Security.AccessControl.InheritanceFlags]::ContainerInherit -bor [System.Security.AccessControl.InheritanceFlags]::ObjectInherit
+$propagate = [System.Security.AccessControl.PropagationFlags]::None
+$allow = [System.Security.AccessControl.AccessControlType]::Allow
 foreach ($who in @($sid, $sys)) {
- $r = New-Object System.Security.AccessControl.FileSystemAccessRule($who, 'FullControl', 'ContainerInherit,ObjectInherit', 'None', 'Allow')
+ $r = [System.Security.AccessControl.FileSystemAccessRule]::new($who, $rights, $inherit, $propagate, $allow)
  $acl.AddAccessRule($r)
 }
 Set-Acl -LiteralPath $p -AclObject $acl
+} catch {
+ [Console]::Error.WriteLine(('ACL_FAILURE={0},{1}' -f $_.Exception.GetType().Name, ($_.FullyQualifiedErrorId -split ',')[0]))
+ exit 1
+}
 '''
     env = dict(os.environ, WECHAT_WORKFLOW_PRIVATE_DIR=str(path))
     try:
@@ -73,7 +82,10 @@ Set-Acl -LiteralPath $p -AclObject $acl
     except (OSError, subprocess.TimeoutExpired):
         raise WorkflowError('private_acl_setup_failed') from None
     if p.returncode:
-        raise WorkflowError('private_acl_setup_failed')
+        # Error types/codes aid diagnosis without exposing paths, SIDs or stderr.
+        marker = re.search(rb'ACL_FAILURE=([A-Za-z0-9_.,-]{1,160})', p.stderr)
+        suffix = '_' + marker.group(1).decode('ascii') if marker else ''
+        raise WorkflowError('private_acl_setup_failed' + suffix)
 
 
 def atomic_write(path, value, private=True):

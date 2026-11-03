@@ -80,6 +80,8 @@
     "search_tests": 10,
     "private_output_path_guard_added": true,
     "windows_wechat_live_tested": false,
-    "ci_matrix": "Windows/macOS/Linux; Python 3.10/3.13; offline tests only"
+    "ci_matrix": "Windows/macOS/Linux; Python 3.10/3.13; offline tests only",
+    "platform_specific_test_skipped_on_mac": 1,
+    "windows_acl_regression_test_added": true
   }
 }

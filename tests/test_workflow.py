@@ -183,6 +183,23 @@ class WorkflowTests(unittest.TestCase):
                 with w.lock(self.p):
                     pass
 
+    @unittest.skipUnless(os.name == 'nt', 'Windows DACL only')
+    def test_windows_private_acl_is_protected_and_limited(self):
+        import subprocess
+        code = r'''
+$ErrorActionPreference = 'Stop'
+$acl = Get-Acl -LiteralPath $env:WECHAT_WORKFLOW_TEST_DIR
+$self = [System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value
+$sids = @($acl.Access | ForEach-Object { $_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]).Value })
+[pscustomobject]@{ protected = $acl.AreAccessRulesProtected; self = $self; sids = $sids } | ConvertTo-Json -Compress
+'''
+        p = subprocess.run(['powershell.exe', '-NoProfile', '-NonInteractive', '-Command', code],
+                           capture_output=True, env=dict(os.environ, WECHAT_WORKFLOW_TEST_DIR=str(self.p)), timeout=30)
+        self.assertEqual(p.returncode, 0)
+        result = json.loads(p.stdout.decode('utf-8-sig'))
+        self.assertTrue(result['protected'])
+        self.assertEqual(set(result['sids']), {result['self'], 'S-1-5-18'})
+
 
 if __name__ == '__main__':
     unittest.main()
