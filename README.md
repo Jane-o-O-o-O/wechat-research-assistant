@@ -4,6 +4,8 @@
 
 供 Codex / WorkBuddy 使用的个人微信信息分析 Skill：通过现成的 WeFlow CLI 读取**用户选定的会话**，持续归档消息，结合已有资料和公开背景，整理需求、承诺、待办、项目进展与回复草稿。
 
+Windows 图形界面见 [微信调查工作台](https://github.com/Jane-o-O-o-O/wechat-research-workbench)。工作台提供多会话项目、会话库和公开调查证据画布，并可使用同一个 `WeChatResearch` 资料目录。部署工作台时请使用工作台仓库随附的兼容 Skill 和 CLI。
+
 这是一个可读源码的工作流包，包含 Skill、Python 脚本、部署提示词和定时任务模板。公开搜索免 API Key；分析使用已有助手。默认下载已经编译好的 Windows CLI，**不需要 Git、Rust、Visual Studio 或 Windows SDK**。微信首次授权和登录仍由本人完成。
 
 ## 当前能力与验证范围
